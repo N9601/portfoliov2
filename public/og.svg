@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <radialGradient id="glow" cx="0.78" cy="0.5" r="0.55">
+      <stop offset="0" stop-color="#4d9cff" stop-opacity="0.28"/>
+      <stop offset="0.6" stop-color="#4d9cff" stop-opacity="0.06"/>
+      <stop offset="1" stop-color="#080808" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" fill="none" stroke="#181818" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="630" fill="#080808"/>
+  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- exploded board: pcb + parts -->
+  <g transform="translate(860 305) rotate(-12)">
+    <rect x="-190" y="-120" width="380" height="240" rx="4" fill="#0b0f1c" stroke="#4d9cff" stroke-opacity="0.5"/>
+    <g stroke="#4d9cff" stroke-opacity="0.35" stroke-width="2" fill="none">
+      <path d="M-150 -60 H-40 V20 H60"/><path d="M-120 80 H0 V-80"/><path d="M80 -90 V-20 H150"/><path d="M40 60 H140 V100"/>
+    </g>
+    <!-- cpu -->
+    <rect x="-46" y="-46" width="92" height="92" fill="#2a2d36" stroke="#88bbff" stroke-opacity="0.8"/>
+    <rect x="-30" y="-30" width="60" height="60" fill="#c8923a"/>
+    <rect x="-14" y="-14" width="28" height="28" fill="#4d9cff"/>
+    <!-- ram (drifting) -->
+    <g transform="translate(230 -90) rotate(18)"><rect x="-7" y="-60" width="14" height="120" fill="#2a2d36" stroke="#88bbff" stroke-opacity="0.7"/><rect x="-3" y="-50" width="6" height="100" fill="#4d9cff"/></g>
+    <g transform="translate(262 -40) rotate(26)"><rect x="-7" y="-60" width="14" height="120" fill="#2a2d36" stroke="#88bbff" stroke-opacity="0.7"/><rect x="-3" y="-50" width="6" height="100" fill="#ff7d36"/></g>
+    <g transform="translate(290 20) rotate(34)"><rect x="-7" y="-60" width="14" height="120" fill="#2a2d36" stroke="#88bbff" stroke-opacity="0.7"/><rect x="-3" y="-50" width="6" height="100" fill="#4d9cff"/></g>
+    <!-- gpu (drifting) -->
+    <g transform="translate(-150 170) rotate(-14)"><rect x="-90" y="-26" width="180" height="52" fill="#2a2d36" stroke="#88bbff" stroke-opacity="0.7"/><rect x="-78" y="18" width="156" height="4" fill="#4d9cff"/></g>
+    <!-- ports -->
+    <g fill="#2a2d36" stroke="#88bbff" stroke-opacity="0.6">
+      <rect x="-300" y="-140" width="36" height="22" transform="rotate(-8)"/><rect x="-310" y="-100" width="36" height="22" transform="rotate(-5)"/><rect x="-318" y="-60" width="36" height="22"/>
+    </g>
+    <!-- caps -->
+    <g fill="#6a7280"><circle cx="-110" cy="-160" r="9"/><circle cx="160" cy="150" r="9"/><circle cx="-230" cy="60" r="9"/><circle cx="200" cy="-180" r="9"/></g>
+    <g fill="#ff7d36"><circle cx="-110" cy="-160" r="4"/><circle cx="200" cy="-180" r="4"/></g>
+    <g fill="#4d9cff"><circle cx="160" cy="150" r="4"/><circle cx="-230" cy="60" r="4"/></g>
+  </g>
+
+  <!-- header marks -->
+  <g font-family="ui-monospace, Menlo, monospace" font-size="13" letter-spacing="4" fill="#f5f5f5">
+    <rect x="60" y="58" width="12" height="12" fill="#4d9cff"/>
+    <text x="84" y="69">NANDAKISHORE REDDY</text>
+    <text x="84" y="90" font-size="11" fill="#7a7876" letter-spacing="3">FULL-STACK · HYDERABAD, IN</text>
+  </g>
+  <g transform="translate(1010 58)"><circle cx="6" cy="7" r="6" fill="#ff1133"/><text x="20" y="12" font-family="ui-monospace, Menlo, monospace" font-size="11" letter-spacing="3" fill="#b4b1af">AVAILABLE</text></g>
+
+  <!-- headline -->
+  <g font-family="'Space Grotesk', 'Helvetica Neue', Arial, sans-serif" font-weight="300" font-size="104" letter-spacing="-4" fill="#f5f5f5">
+    <text x="60" y="360">Making</text>
+    <text x="60" y="452"><tspan fill="#b4b1af">systems</tspan> <tspan font-style="italic" fill="#4d9cff">feel</tspan></text>
+    <text x="60" y="544"><tspan fill="#b4b1af">alive</tspan><tspan fill="#ff1133">.</tspan></text>
+  </g>
+  <text x="60" y="590" font-family="ui-monospace, Menlo, monospace" font-size="12" letter-spacing="3" fill="#7a7876">REACT · NEXT.JS · GO · SUPABASE · WEBGL · N8N</text>
+</svg>

@@ -1,26 +1,461 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------
+   Tokens. One neutral ramp, one accent that changes per chapter.
+   `--accent` is written on <html> by the scrub store; everything that
+   wants the chapter colour reads it and nothing else.
+   ------------------------------------------------------------------ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #080808;
+  --bg-2: #101010;
+  --bg-3: #181818;
+  --fg: #f5f5f5;
+  --fg-2: #b4b1af;
+  --fg-3: #7a7876;
+  --fg-4: #4a4745;
+  --line: rgba(245, 245, 245, 0.1);
+
+  --accent: #4d9cff;
+  --red: #ff1133;
+
+  --font-display: var(--font-space-grotesk), "Space Grotesk", system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+
+  --ease-out: cubic-bezier(0.2, 0.85, 0.2, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-bg-3: var(--bg-3);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-fg-3: var(--fg-3);
+  --color-fg-4: var(--fg-4);
+  --color-accent: var(--accent);
+  --color-red: var(--red);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* clip, not hidden: hidden would make body a scroll container and
+     break position: sticky inside the chapters */
+  overflow-x: clip;
+}
+
+html {
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+a,
+button,
+[data-cursor] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom cursor on fine pointers only */
+@media (pointer: fine) {
+  body,
+  a,
+  button {
+    cursor: none;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Type utilities
+   ------------------------------------------------------------------ */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+.eyebrow-sm {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--fg-4);
+}
+.display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.04em;
+}
+.display-xl {
+  font-size: clamp(2.75rem, 8vw, 8rem);
+}
+.display-l {
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+}
+.display-m {
+  font-size: clamp(1.75rem, 3.5vw, 3rem);
+}
+
+/* anime.js split-text wrappers */
+.word {
+  display: inline-block;
+  white-space: nowrap;
+}
+.char {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+.cycler .char {
+  transform-origin: 0% 95%;
+}
+.cycler-dot {
+  display: block;
+  transform-origin: 0% 0%;
+  will-change: transform;
+}
+.red-dot .char {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* ------------------------------------------------------------------
+   Chapter grid background (faint, masked to the centre)
+   ------------------------------------------------------------------ */
+.grid-bg {
+  background-image: linear-gradient(var(--bg-3) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-3) 1px, transparent 1px);
+  background-size: 80px 80px;
+  background-position: -1px -1px;
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+}
+
+/* ------------------------------------------------------------------
+   Scrub bar (the one progress instrument)
+   ------------------------------------------------------------------ */
+.scrub-bar {
+  position: relative;
+  display: flex;
+  width: calc(100% - 1.5rem);
+  height: 0.75rem;
+  margin: 0.2rem 0.75rem 0;
+  background-size: 1.5384615385% 0.5rem;
+  background-image: linear-gradient(
+    to right,
+    rgba(245, 245, 245, 0.15) 1px,
+    transparent 1px
+  );
+}
+.scrub-button {
+  position: relative;
+  z-index: 1;
+  display: block;
+  height: 0.75rem;
+  opacity: 0.5;
+  border-left: 1px solid rgba(245, 245, 245, 0.6);
+  transition: opacity 150ms ease, background 150ms ease;
+}
+.scrub-button:last-of-type {
+  border-right: 1px solid rgba(245, 245, 245, 0.6);
+}
+.scrub-button:hover,
+.scrub-button.is-active {
+  opacity: 1 !important;
+  background: rgba(245, 245, 245, 0.06);
+}
+.scrub-cursor {
+  position: absolute;
+  z-index: 100;
+  top: -0.125rem;
+  left: 0;
+  width: 3px;
+  height: 1rem;
+  border-radius: 3px;
+  background: var(--accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 60%, transparent);
+  cursor: grab;
+  will-change: transform;
+  transition: background 300ms ease, box-shadow 300ms ease;
+}
+.scrub-cursor::after {
+  content: "";
+  position: absolute;
+  inset: -0.5rem;
+}
+.scrub-cursor-ghost {
+  opacity: 0;
+  background: color-mix(in srgb, var(--accent) 55%, transparent);
+  box-shadow: none;
+  pointer-events: none;
+}
+.scrub-card {
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.scrub-card code {
+  display: block;
+  white-space: pre;
+  font-family: var(--font-mono);
+}
+
+/* ------------------------------------------------------------------
+   Toolbox: feature links reveal line + floating labels + demos
+   ------------------------------------------------------------------ */
+.feature-links {
+  --scaleX: 0;
+  position: relative;
+  padding-top: 0.85rem;
+}
+.feature-links::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  max-width: 16rem;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(var(--scaleX));
+  transform-origin: 0 0;
+}
+
+.toolbox-labels {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  pointer-events: none;
+}
+.toolbox-labels li {
+  opacity: 0;
+  min-height: 1.2em;
+  will-change: opacity, transform;
+}
+.toolbox-labels-left {
+  left: -1rem;
+  bottom: 0.5rem;
+  align-items: flex-start;
+}
+.toolbox-labels-right {
+  right: -1rem;
+  top: 0.5rem;
+  align-items: flex-end;
+  text-align: right;
+}
+
+.stage {
+  position: absolute;
+  inset: 20px;
+  color: var(--accent);
+  transition: color 400ms ease;
+}
+.stage .demo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 400px;
+  transform: translate(-50%, -50%) scale(var(--stage-scale, 1));
+  color: inherit;
+  will-change: opacity;
+}
+@media (max-width: 767px) {
+  .stage .demo {
+    --stage-scale: 0.7;
+  }
+}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+  place-items: center;
+  padding: 28px;
+}
+.demo-grid .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: currentColor;
+  will-change: transform;
+}
+.demo-clock .tick {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 14px;
+  margin: -7px 0 0 -1px;
+  opacity: 0.35;
+  background: currentColor;
+  will-change: transform, opacity;
+}
+.demo-clock .ticker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 150px;
+  margin: -150px 0 0 -1px;
+  background: currentColor;
+  transform-origin: 50% 100%;
+  box-shadow: 0 0 12px currentColor;
+  will-change: transform;
+}
+.demo-clock .core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 18px currentColor;
+}
+.demo-drag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.demo-drag .drag-container {
+  position: relative;
+  width: 280px;
+  height: 280px;
+}
+.demo-drag .drag-container::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 3px dashed currentColor;
+  opacity: 0.35;
+}
+.demo-drag .draggable {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  border-radius: 50%;
+  background: currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 40px color-mix(in srgb, currentColor 45%, transparent);
+  will-change: transform;
+  touch-action: none;
+  cursor: grab;
+}
+.demo-drag .drag-hint {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  color: var(--bg);
+  pointer-events: none;
+}
+.demo-track .track-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.demo-track .track-ghost {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-opacity: 0.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.demo-track .track-path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px currentColor);
+}
+.demo-track .track-car {
+  fill: currentColor;
+  filter: drop-shadow(0 0 8px currentColor);
+}
+.demo-responsive {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.demo-responsive .viewport {
+  position: relative;
+  border: 4px dotted color-mix(in srgb, currentColor 50%, transparent);
+  border-radius: 40px;
+  will-change: width, height;
+}
+.demo-responsive .circle {
+  --diam: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--diam);
+  height: var(--diam);
+  margin: calc(var(--diam) * -0.5) 0 0 calc(var(--diam) * -0.5);
+  border-radius: 50%;
+  background: currentColor;
+  will-change: transform;
+}
+
+/* Horizontal strips hide their scrollbar */
+.strip {
+  scrollbar-width: none;
+}
+.strip::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile toolbox cards: demos are 400px boxes scaled into a 260px stage */
+@media (max-width: 767px) {
+  #toolbox article .stage .demo {
+    --stage-scale: 0.62;
+  }
 }

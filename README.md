@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio v2
 
-## Getting Started
+One object, one timeline. A fixed WebGL motherboard is the spine of the
+page; scroll scrubs a single anime.js timeline that boots it, breaks it
+apart, pulls parts into the Toolbox stage, slots RAM sticks in as
+projects arrive, tilts it for the bio, and powers it up for contact.
 
-First, run the development server:
+See [PLAN.md](PLAN.md) for the design rationale and page map.
+
+## Stack
+
+Next.js 16 · React 19 · Tailwind 4 · anime.js 4 · Three.js
+
+## Run
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`npm run build` for production, `npm run lint` for ESLint,
+`npm run build:og` to re-rasterize the social image from `public/og.svg`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Press ` anywhere on the site for the terminal (`help` lists commands;
+`explode` and `assemble` drive the board).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Layout
 
-## Learn More
+```
+src/
+  app/            routes: / (the page), /cv (printable), /playground (easing editor)
+  lib/
+    chapters.ts   chapter registry: order, labels, accents, scrub-card snippets
+    scrub.ts      scroll store + chapter measurement (no React state)
+    boardReady.ts hook that resolves when the board has booted
+  components/
+    board/        scene.ts (Three scene + parts registry), Board.tsx (boot + scroll timeline)
+    chrome/       Cursor, ScrubController (the one scroll observer), ScrubBar, Terminal
+    chapters/     Hero, Toolbox, Work, Person, Contact
+    demos/        anime.js demos for the Toolbox stage and the Work embeds
+    text/         SplitIn (split-text reveal), Cycler (rotating word)
+```
 
-To learn more about Next.js, take a look at the following resources:
+## How the choreography works
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`Board.tsx` measures every chapter section in document pixels and adds
+tweens to one timeline at those positions (`[from, to]` values, so
+scrubbing backwards is deterministic). The timeline autoplays from
+`onScroll({ sync: true })`, so its time is the page's scroll position.
+The scene's render loop just reads `board.state` and each part's
+`ex` / `focus` every frame.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The boot fly-in animates separate fields (`bootEx`, `bootPower`) so it
+never shares a property with the scroll timeline.
 
-## Deploy on Vercel
+## Accessibility
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`prefers-reduced-motion` renders a single frame of the exploded board,
+skips scrubbing and text reveals, and keeps every chapter readable.

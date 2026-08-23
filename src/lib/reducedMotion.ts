@@ -1,0 +1,8 @@
+/** OS "reduce motion" setting. JS-driven loops check this before starting. */
+export function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
