@@ -70,7 +70,6 @@ export function Cursor() {
           background: "color-mix(in srgb, var(--accent) 6%, transparent)",
           transition:
             "width 220ms var(--ease-out), height 220ms var(--ease-out), background 220ms, border-color 300ms",
-          mixBlendMode: "difference",
         }}
       >
         <span ref={labelRef} className="font-mono text-[10px] uppercase tracking-widest text-fg" />

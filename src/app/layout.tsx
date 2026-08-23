@@ -5,6 +5,7 @@ import { Cursor } from "@/components/chrome/Cursor";
 import { ScrubController } from "@/components/chrome/ScrubController";
 import { ScrubBar } from "@/components/chrome/ScrubBar";
 import { Terminal } from "@/components/chrome/Terminal";
+import { Header } from "@/components/chrome/Header";
 
 const display = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${display.variable} ${mono.variable} h-full antialiased`}>
       <body className="min-h-full bg-bg text-fg">
         <ScrubController />
+        <Header />
         <Cursor />
         <ScrubBar />
         <Terminal />

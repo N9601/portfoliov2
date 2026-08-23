@@ -216,7 +216,7 @@ export function EasingPlayground() {
 
         {/* editor pane */}
         <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-[1.3fr_1fr]">
-          <div className="relative border border-[var(--line)] bg-bg/70 backdrop-blur-md">
+          <div className="relative border border-[var(--line)] bg-bg/90">
             <svg ref={plotRef} viewBox={`0 0 ${W} ${H}`} className="h-auto w-full" aria-label={`${active.label} easing curve`}>
               <defs>
                 <pattern id="ease-grid" width="25" height="25" patternUnits="userSpaceOnUse">
@@ -239,7 +239,7 @@ export function EasingPlayground() {
 
           <div className="flex flex-col gap-4">
             {/* ball track */}
-            <div className="border border-[var(--line)] bg-bg/70 p-5 backdrop-blur-md">
+            <div className="border border-[var(--line)] bg-bg/90 p-5">
               <div className="mb-4 font-mono text-[10px] uppercase tracking-[0.3em] text-fg-3">Preview</div>
               <div ref={trackRef} className="relative h-12 w-full border-y border-dashed border-[var(--line)]">
                 <div
@@ -250,7 +250,7 @@ export function EasingPlayground() {
               </div>
             </div>
             {/* code preview */}
-            <div className="code-preview flex-1 border border-[var(--line)] bg-bg/70 backdrop-blur-md">
+            <div className="code-preview flex-1 border border-[var(--line)] bg-bg/90">
               <header className="flex items-center justify-between border-b border-fg/10 px-4 py-2.5">
                 <h3 className="font-mono text-[10px] uppercase tracking-[0.3em] text-fg-3">anime.js</h3>
                 <button

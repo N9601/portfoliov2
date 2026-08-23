@@ -48,8 +48,8 @@ export function Person() {
   }, []);
 
   return (
-    <section id="person" className="relative flex min-h-[100vh] items-center px-5 py-28 md:px-10">
-      <div className="w-full max-w-[34rem] lg:max-w-[40rem]">
+    <section id="person" className="gutter relative flex min-h-[100vh] items-center py-28">
+      <div className="col">
         <div className="eyebrow mb-4 flex items-center gap-3">
           <span className="block h-px w-8" style={{ background: "var(--accent)" }} />
           <span>{"04 / Person"}</span>

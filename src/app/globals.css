@@ -59,7 +59,6 @@ body {
 
 html {
   scrollbar-width: none;
-  scroll-behavior: smooth;
 }
 html::-webkit-scrollbar {
   display: none;
@@ -86,9 +85,6 @@ button,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {
@@ -122,13 +118,22 @@ button,
   letter-spacing: -0.04em;
 }
 .display-xl {
-  font-size: clamp(2.75rem, 8vw, 8rem);
+  font-size: clamp(2.5rem, 6vw, 5.75rem);
 }
 .display-l {
-  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-size: clamp(2rem, 4.2vw, 4rem);
 }
 .display-m {
-  font-size: clamp(1.75rem, 3.5vw, 3rem);
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+}
+/* page gutter + column used by every chapter */
+.gutter {
+  padding-left: clamp(1.25rem, 5vw, 4.5rem);
+  padding-right: clamp(1.25rem, 5vw, 4.5rem);
+}
+.col {
+  width: 100%;
+  max-width: 36rem;
 }
 
 /* anime.js split-text wrappers */

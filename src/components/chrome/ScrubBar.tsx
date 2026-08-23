@@ -206,7 +206,7 @@ export function ScrubBar() {
           ref={(el) => {
             codeRefs.current[i] = el;
           }}
-          className="scrub-card absolute inset-x-0 bottom-12 m-0 hidden overflow-hidden border border-[var(--line)] bg-bg/85 p-3 font-mono text-[10px] leading-[1.35] text-fg-2 backdrop-blur-md md:block"
+          className="scrub-card absolute inset-x-0 bottom-12 m-0 hidden overflow-hidden border border-[var(--line)] bg-bg/92 p-3 font-mono text-[10px] leading-[1.35] text-fg-2 md:block"
           style={{ opacity: 0 }}
         >
           <code>{c.code}</code>
@@ -214,7 +214,7 @@ export function ScrubBar() {
       ))}
       <div
         ref={cardRef}
-        className="pointer-events-none absolute inset-x-0 bottom-0 h-11 border border-[var(--line)] bg-bg/80 backdrop-blur-md"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-11 border border-[var(--line)] bg-bg/92"
         style={{ opacity: 0 }}
       >
         <div className="eyebrow-sm flex items-center justify-between px-3 pt-1">

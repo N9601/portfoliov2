@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // No floating "N" dev badge in the corner
+  devIndicators: false,
 };
 
 export default nextConfig;

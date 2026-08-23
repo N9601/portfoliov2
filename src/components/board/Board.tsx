@@ -37,7 +37,11 @@ export function Board() {
     // Skip the fly-in when the page is restored mid-scroll; the scroll
     // timeline owns the parts from then on.
     const restoredMidPage = window.scrollY > window.innerHeight * 0.5;
-    if (window.matchMedia("(max-width: 767px)").matches) board.state.scale = 0.7;
+    {
+      const mobile = window.matchMedia("(max-width: 767px)").matches;
+      board.state.scale = mobile ? 0.7 : 0.9;
+      board.state.x = mobile ? 0 : 1.9;
+    }
     let scrollTl: Timeline | null = null;
     let booted = false;
 
@@ -54,11 +58,14 @@ export function Board() {
       // Phones: smaller board, no sideways offsets, focus point under the
       // stage (which sits centred, slightly below the middle).
       const mobile = window.matchMedia("(max-width: 767px)").matches;
-      const M = mobile ? 0.7 : 1; // scale multiplier
+      const M = mobile ? 0.7 : 0.9; // scale multiplier
       const X = mobile ? 0 : 1; // x offset multiplier
-      s.focusX = mobile ? 0 : 1.8;
-      s.focusY = mobile ? -0.5 : 0;
-      s.focusZ = mobile ? 1.8 : 2.6;
+      const R = mobile ? 0 : 1.9; // the "right column" x position
+      // focus point is in root space; the root already sits at R during
+      // the toolbox, so the focused part just comes forward
+      s.focusX = 0;
+      s.focusY = mobile ? -0.5 : 0.1;
+      s.focusZ = mobile ? 1.8 : 2.8;
 
       // Every tween is written as [from, to] so seeking backwards and
       // forwards is deterministic regardless of boot state.
@@ -82,7 +89,7 @@ export function Board() {
       tl.add(s, { explode: [0, 1], duration: 0.6 * heroSpan }, heroSpan * 0.25);
       tl.add(
         s,
-        { scale: [1 * M, 0.8 * M], opacity: [1, 0.55], x: [0, -0.4 * X], duration: vh * 0.8 },
+        { scale: [1 * M, 0.78 * M], opacity: [1, 0.5], duration: vh * 0.8 },
         Math.max(0, b.toolbox.top - vh * 0.8)
       );
 
@@ -113,7 +120,7 @@ export function Board() {
       );
       tl.add(
         s,
-        { explode: [1, 0], scale: [0.8 * M, 0.92 * M], opacity: [0.55, mobile ? 0.45 : 1], x: [-0.4 * X, 1.7 * X], duration: vh * 0.9 },
+        { explode: [1, 0], scale: [0.78 * M, 1 * M], opacity: [0.5, mobile ? 0.45 : 1], duration: vh * 0.9 },
         b.work.top - vh * 0.9
       );
       // RAM sticks slot in one per project (3 projects, 4th stick rides with the last)
@@ -127,7 +134,7 @@ export function Board() {
       // person -> profile tilt
       tl.add(
         s,
-        { rotY: [-TAU, -TAU + 0.95], rotX: [0, 0.12], x: [1.7 * X, 2.1 * X], duration: vh },
+        { rotY: [-TAU, -TAU + 0.95], rotX: [0, 0.12], x: [R, R + 0.3 * X], duration: vh },
         b.person.top - vh * 0.7
       );
 
@@ -136,7 +143,7 @@ export function Board() {
       const faceAt = Math.min(b.contact.top - vh * 0.7, end - vh * 1.2);
       tl.add(
         s,
-        { rotY: [-TAU + 0.95, -TAU], rotX: [0.12, 0], x: [2.1 * X, 0], scale: [0.92 * M, 1 * M], opacity: [mobile ? 0.45 : 1, mobile ? 0.6 : 1], duration: vh * 0.8 },
+        { rotY: [-TAU + 0.95, -TAU], rotX: [0.12, 0], x: [R + 0.3 * X, 0], scale: [1 * M, 0.95 * M], opacity: [mobile ? 0.45 : 1, 0.45], duration: vh * 0.8 },
         faceAt
       );
       tl.add(s, { power: [1, 2.2], duration: vh * 0.35, ease: "outExpo" }, end - vh * 0.4);
@@ -179,7 +186,8 @@ export function Board() {
     let raf = 0;
     let docVisible = document.visibilityState === "visible";
     const loop = () => {
-      board.render((performance.now() - start) / 1000);
+      // Nothing to draw while the board is faded out (end of the page)
+      if (board.state.opacity > 0.02) board.render((performance.now() - start) / 1000);
       raf = docVisible ? requestAnimationFrame(loop) : 0;
     };
     raf = requestAnimationFrame(loop);

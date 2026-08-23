@@ -163,7 +163,7 @@ function ToolboxMobile() {
           <article
             key={b.id}
             data-card={i}
-            className="flex w-[82vw] max-w-[22rem] shrink-0 snap-center flex-col border border-[var(--line)] bg-bg/70 p-4 backdrop-blur-md"
+            className="flex w-[82vw] max-w-[22rem] shrink-0 snap-center flex-col border border-[var(--line)] bg-bg/90 p-4"
             style={{ "--accent": b.accent } as React.CSSProperties}
           >
             <div className="eyebrow flex items-center gap-2" style={{ color: "var(--accent)" }}>
@@ -323,20 +323,20 @@ function ToolboxPinned() {
 
       <div className="sticky top-0 h-[100vh] overflow-hidden">
         <div className="absolute inset-0 grid-bg opacity-20" aria-hidden />
-        <div className="eyebrow absolute left-5 top-20 z-20 flex items-center gap-3 md:left-10 md:top-24">
+        <div className="gutter eyebrow absolute inset-x-0 top-20 z-20 flex items-center gap-3 md:top-24">
           <span className="block h-px w-8" style={{ background: "var(--accent)" }} />
           <span>{"02 / Toolbox"}</span>
         </div>
 
-        {/* beat copy */}
-        <div className="absolute left-5 top-32 z-20 w-[calc(100%-2.5rem)] md:bottom-16 md:left-10 md:top-auto md:w-[26rem]">
+        {/* beat copy: left column, vertically centred */}
+        <div className="gutter absolute inset-x-0 top-32 z-20 grid md:top-1/2 md:-translate-y-1/2">
           {BEATS.map((b, i) => (
             <div
               key={b.id}
               ref={(el) => {
                 textRefs.current[i] = el;
               }}
-              className="absolute left-0 top-0 w-full md:bottom-0 md:top-auto"
+              className="col [grid-area:1/1] max-w-[28rem]"
               style={{ opacity: 0 }}
             >
               <div className="eyebrow mb-3 flex items-center gap-3" style={{ color: "var(--accent)" }}>
@@ -368,7 +368,7 @@ function ToolboxPinned() {
         </div>
 
         {/* stage: the focused board part sits behind this (Board.tsx) */}
-        <div className="absolute left-1/2 top-[58%] z-10 aspect-square w-[min(440px,86vw)] -translate-x-1/2 -translate-y-1/2 md:left-[64%] md:top-1/2">
+        <div className="absolute left-1/2 top-[58%] z-10 aspect-square w-[min(440px,86vw)] -translate-x-1/2 -translate-y-1/2 md:left-[69%] md:top-[52%]">
           <svg viewBox="0 0 440 440" className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden>
             <circle cx="220" cy="220" r="212" fill="none" stroke="var(--accent)" strokeOpacity="0.12" strokeWidth="1" />
             <path ref={ringRef} d="M220 8 a212 212 0 1 1 -0.01 0" fill="none" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" />

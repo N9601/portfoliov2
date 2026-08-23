@@ -97,13 +97,13 @@ const PROJECTS: Project[] = [
 export function Work() {
   return (
     <section id="work" className="relative">
-      <div className="eyebrow sticky top-0 z-20 flex h-0 items-center gap-3 overflow-visible pl-5 pt-20 md:pl-10 md:pt-24">
+      <div className="gutter eyebrow sticky top-0 z-20 flex h-0 items-center gap-3 overflow-visible pt-20 md:pt-24">
         <span className="block h-px w-8" style={{ background: "var(--accent)" }} />
         <span>{"03 / Work"}</span>
       </div>
       {PROJECTS.map((p) => (
-        <article key={p.num} className="relative flex min-h-[100vh] items-center px-5 py-28 md:px-10">
-          <div className="w-full max-w-[34rem] lg:max-w-[40rem]">
+        <article key={p.num} className="gutter relative flex min-h-[100vh] items-center py-28">
+          <div className="col">
             <div className="eyebrow mb-3 flex items-center gap-3">
               <span style={{ color: "var(--accent)" }}>{p.num}</span>
               <span>{p.role}</span>
@@ -116,7 +116,7 @@ export function Work() {
               {p.intro}
             </SplitIn>
 
-            <div className="mt-6 h-56 overflow-hidden border border-[var(--line)] bg-bg/70 backdrop-blur-md">
+            <div className="mt-6 h-56 overflow-hidden border border-[var(--line)] bg-bg/90">
               <div className="eyebrow-sm flex items-center justify-between border-b border-[var(--line)] px-3 py-1.5">
                 <span>{p.embedLabel}</span>
                 <span className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--accent)" }} />

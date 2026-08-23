@@ -158,7 +158,7 @@ export function Terminal() {
   return (
     <div className="fixed inset-x-0 top-0 z-[9990] flex justify-center px-0 sm:px-6">
       <div
-        className="w-full max-w-3xl border-x-0 border-b border-[var(--line)] bg-bg/95 backdrop-blur-xl sm:border-x"
+        className="w-full max-w-3xl border-x-0 border-b border-[var(--line)] bg-bg sm:border-x"
         style={{ boxShadow: "0 30px 80px rgba(0,0,0,0.7)", animation: "termDrop 320ms var(--ease-out)" }}
       >
         <div className="eyebrow-sm flex items-center justify-between border-b border-[var(--line)] px-4 py-2">

@@ -90,7 +90,8 @@ export function createBoardScene(mount: HTMLElement): BoardScene {
     powerPreference: "high-performance",
   });
   const isCoarse = window.matchMedia("(pointer: coarse)").matches;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isCoarse ? 1.25 : 1.5));
+  // DPR 1 everywhere: the board is a background, and 2x pixels is 4x fill cost
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, isCoarse ? 1 : 1.1));
   renderer.setSize(width, height);
   renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -398,7 +399,7 @@ export function createBoardScene(mount: HTMLElement): BoardScene {
   }
 
   // Particles
-  const particleCount = 130;
+  const particleCount = 80;
   const particleGeo = new THREE.BufferGeometry();
   const positions = new Float32Array(particleCount * 3);
   const seeds = new Float32Array(particleCount);

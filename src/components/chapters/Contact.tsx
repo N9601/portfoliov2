@@ -71,7 +71,7 @@ export function Contact() {
   };
 
   return (
-    <section id="contact" className="relative flex min-h-[100vh] flex-col justify-between px-5 pb-24 pt-28 md:px-10 md:pb-28">
+    <section id="contact" className="gutter relative flex min-h-[100vh] flex-col justify-between pb-24 pt-28 md:pb-28">
       <div className="mx-auto w-full max-w-5xl text-center">
         <div className="eyebrow mb-5 flex items-center justify-center gap-3">
           <span className="block h-px w-8" style={{ background: "var(--accent)" }} />
@@ -89,7 +89,7 @@ export function Contact() {
           onClick={copy}
           data-cursor
           data-cursor-label={copied ? "COPIED" : "COPY"}
-          className="group mt-8 inline-flex h-12 items-center gap-3 border border-[var(--line)] bg-fg/[0.04] pl-4 pr-3 font-mono text-[12px] text-fg-2 backdrop-blur-md transition hover:text-fg"
+          className="group mt-8 inline-flex h-12 items-center gap-3 border border-[var(--line)] bg-fg/[0.04] pl-4 pr-3 font-mono text-[12px] text-fg-2 transition hover:text-fg"
         >
           <span style={{ color: "var(--accent)" }}>$</span>
           <span className="break-all">mail {EMAIL}</span>
